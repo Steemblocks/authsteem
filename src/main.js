@@ -1,4 +1,4 @@
-import 'primer/index.scss';
+import 'regenerator-runtime/runtime';
 import '@vue/ui/dist/vue-ui.css';
 import '@/styles.less';
 import Vue from 'vue';

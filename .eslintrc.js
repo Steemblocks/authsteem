@@ -4,7 +4,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: ['plugin:vue/essential', '@vue/airbnb', 'prettier'],
+  extends: ['plugin:vue/essential', '@vue/eslint-config-airbnb', 'prettier'],
   plugins: ['prettier'],
   rules: {
     'no-console': 'off',
@@ -12,8 +12,16 @@ module.exports = {
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
     'prettier/prettier': 'off',
+    'vue/multi-word-component-names': 'off',
+    'vue/no-template-target-blank': 'off',
+    'vue/require-default-prop': 'off',
+    'vue/html-button-has-type': 'off',
+    'vuejs-accessibility/click-events-have-key-events': 'off',
+    'vuejs-accessibility/form-control-has-label': 'off',
+    'vuejs-accessibility/anchor-has-content': 'off',
+    'vuejs-accessibility/label-has-for': 'off',
   },
   parserOptions: {
-    parser: 'babel-eslint',
+    ecmaVersion: 2020,
   },
 };

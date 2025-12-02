@@ -31,6 +31,14 @@ body,
 a {
   color: @link-color;
   cursor: pointer;
+  text-decoration: none;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:visited {
+    text-decoration: none;
+  }
 }
 
 p {

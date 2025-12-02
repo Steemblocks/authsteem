@@ -119,8 +119,10 @@ import triplesec from 'triplesec';
 import PasswordValidator from 'password-validator';
 import { credentialsValid, getKeys, getAuthority } from '@/helpers/auth';
 import { addToKeychain, hasAccounts } from '@/helpers/keychain';
-import { ERROR_INVALID_CREDENTIALS, TOOLTIP_IMPORT_ENCRYPTION_KEY } from '@/helpers/messages.json';
+import messages from '@/helpers/messages.json';
 import { isWeb } from '@/helpers/utils';
+
+const { ERROR_INVALID_CREDENTIALS, TOOLTIP_IMPORT_ENCRYPTION_KEY } = messages;
 
 const passphraseSchema = new PasswordValidator();
 
