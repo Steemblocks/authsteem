@@ -5,7 +5,7 @@
       <template v-else>
         <div class="mb-4 text-center" v-if="!failed">
           <div class="mb-4">
-            <Avatar :username="username" :size="80" class="mb-2" />
+            <Avatar :username="username" :size="80" :iconUrl="profile.icon" class="mb-2" />
             <h4 v-if="profile.name" class="m-0">{{ profile.name }}</h4>
             <div v-if="profile.website">{{ profile.website | parseUrl }}</div>
           </div>
@@ -55,6 +55,43 @@ export default {
       isLoading: false,
       failed: false,
       profile: {},
+      customApps: {
+        steemworld: {
+          name: 'SteemWorld',
+          website: 'https://steemworld.org/',
+          about: 'Welcome to SteemWorld - Your favorite Tool for the Steem Blockchain',
+          creator: 'steemchiller',
+          icon: 'https://steemworld.org/favicon.png',
+        },
+        'steem-atlas': {
+          name: 'Steem Atlas',
+          website: 'https://steematlas.com/',
+          about: 'Steem Atlas - Explore the Steem Blockchain',
+          creator: 'pennsif',
+          icon: 'https://steemitimages.com/u/steem-atlas/avatar/small',
+        },
+        'hari-raid': {
+          name: 'Hari Raid',
+          website: 'https://hari-raid.h4lab.com/login',
+          about: 'Hari Raid',
+          creator: 'h4lab',
+          icon: 'https://steemitimages.com/u/h4lab/avatar/small',
+        },
+        steempro: {
+          name: 'SteemPro',
+          website: 'https://www.steempro.com/',
+          about: 'SteemPro',
+          creator: 'faisalamin',
+          icon: 'https://steemitimages.com/u/steempro.com/avatar/small',
+        },
+        H4lab: {
+          name: 'H4lab',
+          website: 'https://h4lab.com/?steemid=&lang=us',
+          about: 'H4lab',
+          creator: 'h4lab',
+          icon: 'https://steemitimages.com/u/h4lab/avatar/small',
+        },
+      },
     };
   },
   watch: {
@@ -66,6 +103,14 @@ export default {
     },
     loadProfile() {
       this.isLoading = true;
+      // Check if this is a custom app with predefined data
+      if (this.customApps[this.username]) {
+        this.profile = this.customApps[this.username];
+        this.failed = false;
+        this.isLoading = false;
+        return;
+      }
+      // Otherwise, fetch from blockchain
       client.database.getAccounts([this.username]).then(accounts => {
         if (accounts[0]) {
           try {
