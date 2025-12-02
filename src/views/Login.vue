@@ -1,6 +1,6 @@
 <template>
   <Center>
-    <router-link to="/" class="d-inline-block my-2 no-decoration">
+    <router-link to="/" class="d-inline-block my-6 no-decoration">
       <span class="logo iconfont icon-steemconnect" />
       <h4 class="m-0">AuthSteem</h4>
     </router-link>

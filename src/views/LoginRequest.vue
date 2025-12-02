@@ -12,7 +12,7 @@
                 <Avatar :username="app" :size="80" />
                 <div class="mt-2">
                   <h4 v-if="appProfile.name" class="mb-0">{{ appProfile.name }}</h4>
-                  <span v-if="appProfile.website">{{ appProfile.website | parseUrl }}</span>
+                  <span v-if="appProfile.website">{{ $filters.parseUrl(appProfile.website) }}</span>
                 </div>
               </div>
               <p>

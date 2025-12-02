@@ -1,5 +1,5 @@
 <template>
-  <pre class="mt-2 d-inline-block">{{ value | pretty }}</pre>
+  <pre class="mt-2 d-inline-block">{{ $filters.pretty(value) }}</pre>
 </template>
 
 <script>

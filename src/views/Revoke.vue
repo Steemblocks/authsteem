@@ -64,7 +64,7 @@
               Continue
             </router-link>
             <a v-else :href="callback" class="btn btn-large btn-blue mb-2 mt-2">
-              Continue to {{ callback | parseUrl }}
+              Continue to {{ $filters.parseUrl(callback) }}
             </a>
           </template>
         </div>

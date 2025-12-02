@@ -1,9 +1,7 @@
 import 'regenerator-runtime/runtime';
-import '@vue/ui/dist/vue-ui.css';
 import '@/styles.less';
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-import VueUi from '@vue/ui';
+import { createApp } from 'vue';
+import { createI18n } from 'vue-i18n';
 import { upperFirst, camelCase } from 'lodash';
 import urlParse from 'url-parse';
 import App from '@/App.vue';
@@ -24,16 +22,10 @@ export const idleDetector = createIdleDetector({
   autostop: true,
 });
 
-const requireComponent = require.context('./components', true, /[\w-]+\.vue$/);
-requireComponent.keys().forEach(fileName => {
-  const componentConfig = requireComponent(fileName);
-  const componentName = upperFirst(camelCase(fileName.replace(/^\.\//, '').replace(/\.\w+$/, '')));
-  Vue.component(componentName, componentConfig.default || componentConfig);
-});
-
-Vue.filter('dateHeader', value => new Date(value).toLocaleString());
-Vue.filter('parseUrl', value => urlParse(value).host);
-Vue.filter('pretty', value => {
+// Helper functions for filters (Vue 3 doesn't have global filters)
+export const dateHeaderFilter = value => new Date(value).toLocaleString();
+export const parseUrlFilter = value => urlParse(value).host;
+export const prettyFilter = value => {
   let json;
   try {
     json = JSON.stringify(JSON.parse(value), null, 2);
@@ -41,10 +33,7 @@ Vue.filter('pretty', value => {
     json = value;
   }
   return json;
-});
-
-Vue.use(VueUi);
-Vue.use(VueI18n);
+};
 
 getPersistedData(({ store, url }) => {
   store.dispatch('loadSettings');
@@ -57,36 +46,50 @@ getPersistedData(({ store, url }) => {
     });
   }
 
-  const i18n = new VueI18n({
+  const i18n = createI18n({
+    legacy: false,
     locale: 'en',
     messages,
     numberFormats,
   });
 
-  Vue.config.productionTip = false;
+  const app = createApp(App);
 
-  new Vue({
-    i18n,
-    router,
-    store,
-    render: h => h(App),
-    created() {
-      const { savedPath } = this.$store.state.ui;
+  // Register global components
+  const requireComponent = require.context('./components', true, /[\w-]+\.vue$/);
+  requireComponent.keys().forEach(fileName => {
+    const componentConfig = requireComponent(fileName);
+    const componentName = upperFirst(camelCase(fileName.replace(/^\.\//, '').replace(/\.\w+$/, '')));
+    app.component(componentName, componentConfig.default || componentConfig);
+  });
 
-      if (!isChromeExtension()) return;
+  // Provide filter functions globally via app.config.globalProperties
+  app.config.globalProperties.$filters = {
+    dateHeader: dateHeaderFilter,
+    parseUrl: parseUrlFilter,
+    pretty: prettyFilter,
+  };
 
-      if (url) {
-        this.$router.push(url);
-        return;
-      }
+  app.use(i18n);
+  app.use(router);
+  app.use(store);
 
-      if (savedPath) {
-        this.$router.push(savedPath);
-      }
+  app.config.productionTip = false;
 
-      this.$router.afterEach(to => {
-        this.$store.dispatch('savePath', to.path);
-      });
-    },
-  }).$mount('#app');
+  // Handle Chrome extension routing
+  const { savedPath } = store.state.ui;
+
+  if (isChromeExtension()) {
+    if (url) {
+      router.push(url);
+    } else if (savedPath) {
+      router.push(savedPath);
+    }
+
+    router.afterEach(to => {
+      store.dispatch('savePath', to.path);
+    });
+  }
+
+  app.mount('#app');
 });

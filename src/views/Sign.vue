@@ -19,7 +19,7 @@
           />
           <div class="flash flash-warn mb-4" v-if="parsed.params.callback">
             You are going to get redirected to
-            <span class="link-color">{{ parsed.params.callback | parseUrl }}</span
+            <span class="link-color">{{ $filters.parseUrl(parsed.params.callback) }}</span
             >.
           </div>
           <div class="flash flash-warn mb-4" v-if="username && hasRequiredKey === false">

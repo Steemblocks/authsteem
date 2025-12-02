@@ -7,7 +7,7 @@
           <div class="mb-4">
             <Avatar :username="username" :size="80" :iconUrl="profile.icon" class="mb-2" />
             <h4 v-if="profile.name" class="m-0">{{ profile.name }}</h4>
-            <div v-if="profile.website">{{ profile.website | parseUrl }}</div>
+            <div v-if="profile.website">{{ $filters.parseUrl(profile.website) }}</div>
           </div>
           <a
             v-if="profile.website"
