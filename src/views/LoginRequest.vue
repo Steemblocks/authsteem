@@ -146,10 +146,11 @@ export default {
         try {
           this.appProfile = JSON.parse(accounts[0].json_metadata).profile;
           if (
-            !this.appProfile || 
-            !this.appProfile.redirect_uris || 
-            !this.appProfile.redirect_uris.includes(this.callback) || 
-            !isValidUrl(this.callback)
+            !isChromeExtension() &&
+            (!this.appProfile ||
+              !this.appProfile.redirect_uris ||
+              !this.appProfile.redirect_uris.includes(this.callback) ||
+              !isValidUrl(this.callback))
           ) {
             this.failed = true;
           }
