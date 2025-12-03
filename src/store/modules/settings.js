@@ -50,6 +50,8 @@ const actions = {
       client.updateClient(settings.address);
       dispatch('getConfig');
 
+      // Stop any existing idle detector to prevent multiple instances
+      idleDetector.stop();
       idleDetector.start(settings.timeout * 60 * 1000, () => {
         idleDetector.stop();
         dispatch('logout');

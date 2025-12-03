@@ -84,8 +84,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return true;
     }
     case 'signComplete':
-      if (callbacks[request.payload.requestId])
+      if (callbacks[request.payload.requestId]) {
         callbacks[request.payload.requestId](request.payload.args);
+        delete callbacks[request.payload.requestId];
+      }
       return false;
     default:
       sendResponse(false);
@@ -94,6 +96,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 chrome.windows.onRemoved.addListener((popupId) => {
-  if (popupIdsToReqIds[popupId] && callbacks[popupIdsToReqIds[popupId]])
+  if (popupIdsToReqIds[popupId] && callbacks[popupIdsToReqIds[popupId]]) {
     callbacks[popupIdsToReqIds[popupId]](['Request rejected', null]);
+    delete callbacks[popupIdsToReqIds[popupId]];
+    delete popupIdsToReqIds[popupId];
+  }
 });

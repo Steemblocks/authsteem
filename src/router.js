@@ -19,8 +19,8 @@ const Accounts = () => import(/* webpackChunkName: "accounts" */ '@/views/Accoun
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
 const Apps = () => import(/* webpackChunkName: "apps" */ '@/views/Apps.vue');
 const Developers = () => import(/* webpackChunkName: "developers" */ '@/views/Developers.vue');
-const Error404 = () => import(/* webpachChunkName: "error-404" */ '@/views/404.vue');
-const BroadcastOp = () => import(/* webpachChunkName: "dev-tools" */ '@/views/DevTools/BroadcastOp.vue');
+const Error404 = () => import(/* webpackChunkName: "error-404" */ '@/views/404.vue');
+const BroadcastOp = () => import(/* webpackChunkName: "dev-tools" */ '@/views/DevTools/BroadcastOp.vue');
 
 const requireAuth = (to, from, next, params) => {
   if (!store.state.auth.account.name) {

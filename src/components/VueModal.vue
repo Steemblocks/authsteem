@@ -44,23 +44,56 @@ export default {
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
+  align-items: flex-start;
   z-index: 2000;
 }
 
 .vue-ui-modal {
   background: white;
-  border-radius: 8px;
-  max-width: 600px;
-  width: 90%;
-  max-height: 90vh;
+  border-radius: 0;
+  max-width: 400px;
+  width: 400px;
+  height: 100vh;
+  max-height: 100vh;
   overflow: auto;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
 }
 
 .vue-ui-modal.small {
   max-width: 400px;
+}
+
+@media (max-width: 768px) {
+  .vue-ui-modal {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .vue-ui-modal.small {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .vue-ui-modal-backdrop {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .vue-ui-modal {
+    width: 95%;
+    max-width: 95%;
+    height: auto;
+    max-height: 95vh;
+    border-radius: 8px;
+  }
+
+  .vue-ui-modal.small {
+    width: 90%;
+    max-width: 90%;
+  }
 }
 
 .vue-ui-modal-header {

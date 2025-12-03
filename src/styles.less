@@ -16,6 +16,16 @@ body {
   font-size: 18px;
 }
 
+/* Hide scrollbars globally */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 .app--extension {
   height: 600px;
   width: @extension-width !important;

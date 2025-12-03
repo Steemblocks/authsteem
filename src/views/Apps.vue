@@ -23,9 +23,9 @@
         </div>
         <div class="columns" v-if="filteredApps.length > 0">
           <App
-            :username="app"
-            :key="app"
             v-for="app in filteredApps.slice(0, 12)"
+            :key="app"
+            :username="app"
             :iconUrl="getAppIcon(app)"
             class="column col-sm-3 col-6 mb-4"
             @select="openModal(app)"
@@ -38,9 +38,9 @@
         <VueLoadingIndicator v-if="isLoading && allTopApps.length === 0" class="big mb-4" />
         <div class="columns mb-4" v-else>
           <App
-            :username="app"
-            :key="app"
             v-for="app in allTopApps.slice(0, 12)"
+            :key="app"
+            :username="app"
             :iconUrl="getAppIcon(app)"
             class="column col-sm-3 col-6 mb-4"
             @select="openModal(app)"
@@ -50,9 +50,9 @@
         <VueLoadingIndicator v-if="isLoading && allApps.length === 0" class="big mb-4" />
         <div class="columns mb-4" v-else>
           <App
-            :username="app"
-            :key="app"
             v-for="app in allApps.slice(0, 4)"
+            :key="app"
+            :username="app"
             :iconUrl="getAppIcon(app)"
             class="column col-sm-3 col-6 mb-4"
             @select="openModal(app)"
@@ -81,24 +81,6 @@ export default {
       apps: [],
       selectedApp: null,
       modalOpen: false,
-      featuredApps: ['steemworld', 'steem-atlas', 'hari-raid', 'steempro', 'H4lab'],
-      customAppData: {
-        steemworld: {
-          icon: 'https://steemworld.org/favicon.png',
-        },
-        'steem-atlas': {
-          icon: 'https://steemitimages.com/u/steem-atlas/avatar/small',
-        },
-        'hari-raid': {
-          icon: 'https://steemitimages.com/u/h4lab/avatar/small',
-        },
-        steempro: {
-          icon: 'https://steemitimages.com/u/steempro.com/avatar/small',
-        },
-        H4lab: {
-          icon: 'https://steemitimages.com/u/h4lab/avatar/small',
-        },
-      },
     };
   },
   computed: {
@@ -108,7 +90,7 @@ export default {
         'esteem-app', 'steempeak.app', 'test-sdfgh', 'peakd.app', 'unknownonline', 
         'buildteam.app', 'smartsteem.app', 'drugwars.app', 'actifit.app', 'steemhunt.app'
       ];
-      return [...this.featuredApps, ...this.topApps.filter(app => !this.featuredApps.includes(app) && !removedApps.includes(app))];
+      return this.topApps.filter(app => !removedApps.includes(app));
     },
     allApps() {
       const removedApps = [
@@ -116,7 +98,7 @@ export default {
         'esteem-app', 'steempeak.app', 'test-sdfgh', 'peakd.app', 'unknownonline', 
         'buildteam.app', 'smartsteem.app', 'drugwars.app', 'actifit.app', 'steemhunt.app'
       ];
-      return [...this.featuredApps, ...this.apps.filter(app => !this.featuredApps.includes(app) && !removedApps.includes(app))];
+      return this.apps.filter(app => !removedApps.includes(app));
     },
     filteredApps() {
       const apps = JSON.parse(JSON.stringify(this.allApps));
@@ -126,8 +108,8 @@ export default {
     },
   },
   methods: {
-    getAppIcon(username) {
-      return this.customAppData[username]?.icon || null;
+    getAppIcon() {
+      return null;
     },
     async loadApps() {
       const username = ORACLE_USERNAME;

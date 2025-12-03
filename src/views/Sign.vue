@@ -65,6 +65,7 @@ import { getAuthority } from '@/helpers/auth';
 import {
   isWeb,
   isChromeExtension,
+  isElectron,
   getVestsToSP,
   legacyUriToParsedSteemUri,
   getLowestAuthorityRequired,
@@ -171,7 +172,7 @@ export default {
         }
       }
 
-      // TODO: Handle Chrome extension & desktop app redirect.
+      // Handle redirect for web, Chrome extension, and desktop app
       if (confirmation && this.parsed.params.callback && isWeb()) {
         window.location = steemuri.resolveCallback(this.parsed.params.callback, {
           sig,
@@ -179,6 +180,9 @@ export default {
           block: confirmation.block_num || undefined,
           txn: confirmation.txn_num || undefined,
         });
+      } else if (isChromeExtension() || isElectron()) {
+        // Chrome extension and Electron app redirect is handled by signComplete callback
+        this.loading = false;
       } else {
         this.loading = false;
       }
