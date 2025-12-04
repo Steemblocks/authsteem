@@ -1,6 +1,5 @@
-FROM alpine:3.9
+FROM node:18-alpine AS builder
 ARG TAG=master
-RUN apk add --no-cache nodejs npm git python make g++
 WORKDIR /app
 ADD . /app
 RUN cd /app && \
