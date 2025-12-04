@@ -12,7 +12,7 @@
                 <Avatar :username="app" :size="80" />
                 <div class="mt-2">
                   <h4 v-if="appProfile.name" class="mb-0">{{ appProfile.name }}</h4>
-                  <span v-if="appProfile.website">{{ appProfile.website | parseUrl }}</span>
+                  <span v-if="appProfile.website">{{ $filters.parseUrl(appProfile.website) }}</span>
                 </div>
               </div>
               <p>
@@ -111,6 +111,9 @@ export default {
       return this.$store.state.auth.account;
     },
     hasAuthority() {
+      if (!this.account || !this.account.posting || !this.account.posting.account_auths) {
+        return false;
+      }
       const auths = this.account.posting.account_auths.map(auth => auth[0]);
       return auths.indexOf(this.clientId) !== -1;
     },
@@ -144,12 +147,16 @@ export default {
           this.appProfile = JSON.parse(accounts[0].json_metadata).profile;
           if (
             !isChromeExtension() &&
-            (!this.appProfile.redirect_uris.includes(this.callback) || !isValidUrl(this.callback))
+            (!this.appProfile ||
+              !this.appProfile.redirect_uris ||
+              !this.appProfile.redirect_uris.includes(this.callback) ||
+              !isValidUrl(this.callback))
           ) {
             this.failed = true;
           }
         } catch (e) {
           console.log('Failed to parse app account', e);
+          this.failed = true;
         }
       } else {
         this.failed = true;
@@ -192,6 +199,7 @@ export default {
         console.error('Failed to log in', err);
         this.signature = '';
         this.failed = true;
+        this.showLoading = false;
         if (this.requestId) {
           signComplete(this.requestId, err, null);
         }

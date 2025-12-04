@@ -27,7 +27,7 @@
         <OperationValueAmount v-else-if="schema.type === 'amount'" :value="value" />
         <OperationValueJson v-else-if="schema.type === 'json'" :value="value" />
         <OperationValueBool v-else-if="schema.type === 'bool'" :value="value" />
-        <template v-else-if="schema.type === 'time'">{{ value | dateHeader }}</template>
+        <template v-else-if="schema.type === 'time'">{{ $filters.dateHeader(value) }}</template>
         <template v-else>{{ value }}</template>
       </template>
     </template>

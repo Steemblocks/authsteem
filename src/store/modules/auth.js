@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import { cryptoUtils } from 'dsteem';
 import client from '@/helpers/client';
 import { credentialsValid, privateKeyFrom } from '@/helpers/auth';
@@ -13,17 +12,17 @@ const state = {
 
 const mutations = {
   login(_state, { result, keys }) {
-    Vue.set(_state, 'username', result.name);
-    Vue.set(_state, 'keys', keys);
-    Vue.set(_state, 'account', result);
+    _state.username = result.name;
+    _state.keys = keys;
+    _state.account = result;
   },
   logout(_state) {
-    Vue.set(_state, 'username', null);
-    Vue.set(_state, 'keys', {});
-    Vue.set(_state, 'account', {});
+    _state.username = null;
+    _state.keys = {};
+    _state.account = {};
   },
   loadAccount(_state, account) {
-    Vue.set(_state, 'account', account);
+    _state.account = account;
   },
 };
 

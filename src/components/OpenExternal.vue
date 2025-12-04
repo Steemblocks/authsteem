@@ -26,7 +26,7 @@ export default {
       /* eslint-disable no-underscore-dangle */
       if (this.withChrome && window._steemconnect) window._steemconnect.sign(this.uri);
       else document.location = this.uri;
-      /* eslint-enable no-underscore-rangle */
+      /* eslint-enable no-underscore-dangle */
     },
   },
 };

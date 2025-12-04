@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import client from '@/helpers/client';
 import { idleDetector } from '@/main';
 
@@ -16,17 +15,17 @@ const state = {
 
 const mutations = {
   saveProperties(_state, result) {
-    Vue.set(_state, 'properties', result);
+    _state.properties = result;
   },
   saveConfig(_state, config) {
-    Vue.set(_state, 'steemAddressPrefix', config.STEEM_ADDRESS_PREFIX);
-    Vue.set(_state, 'chainId', config.STEEM_CHAIN_ID);
+    _state.steemAddressPrefix = config.STEEM_ADDRESS_PREFIX;
+    _state.chainId = config.STEEM_CHAIN_ID;
   },
   saveSettings(_state, settings) {
-    Vue.set(_state, 'language', settings.language || _state.language);
-    Vue.set(_state, 'timeout', settings.timeout || _state.timeout);
-    Vue.set(_state, 'theme', settings.theme || _state.theme);
-    Vue.set(_state, 'address', settings.address || _state.address);
+    _state.language = settings.language || _state.language;
+    _state.timeout = settings.timeout || _state.timeout;
+    _state.theme = settings.theme || _state.theme;
+    _state.address = settings.address || _state.address;
   },
 };
 
@@ -51,6 +50,8 @@ const actions = {
       client.updateClient(settings.address);
       dispatch('getConfig');
 
+      // Stop any existing idle detector to prevent multiple instances
+      idleDetector.stop();
       idleDetector.start(settings.timeout * 60 * 1000, () => {
         idleDetector.stop();
         dispatch('logout');

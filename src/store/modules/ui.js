@@ -1,12 +1,10 @@
-import Vue from 'vue';
-
 const state = {
   savedPath: null,
 };
 
 const mutations = {
   savePath(_state, path) {
-    Vue.set(_state, 'savedPath', path);
+    _state.savedPath = path;
   },
 };
 

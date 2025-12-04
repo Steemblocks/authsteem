@@ -53,11 +53,12 @@ export default {
       return Object.keys(keys).reduce((acc, b) => {
         if (!keys[b]) return acc;
 
-        acc[b] = privateKeyFrom(keys[b])
-          .createPublic()
-          .toString();
-
-        return acc;
+        return {
+          ...acc,
+          [b]: privateKeyFrom(keys[b])
+            .createPublic()
+            .toString(),
+        };
       }, {});
     },
     auths() {

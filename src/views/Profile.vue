@@ -195,7 +195,7 @@ export default {
           .map(uri => uri.trim())
           .filter(uri => uri);
       }
-      Object.keys(draft).forEach(key => draft[key] == null && delete draft[key]);
+      Object.keys(draft).forEach(key => draft[key] === null && delete draft[key]);
       const profile = { ...this.profile, ...draft };
 
       let metadata = jsonParse(this.account.json_metadata);

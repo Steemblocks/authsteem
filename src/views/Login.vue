@@ -1,6 +1,6 @@
 <template>
   <Center>
-    <router-link to="/" class="d-inline-block my-2 no-decoration">
+    <router-link to="/" class="d-inline-block my-6 no-decoration">
       <span class="logo iconfont icon-steemconnect" />
       <h4 class="m-0">AuthSteem</h4>
     </router-link>
@@ -72,11 +72,13 @@ import triplesec from 'triplesec';
 import { getKeychain } from '@/helpers/keychain';
 import { jsonParse } from '@/helpers/utils';
 import { getAuthority } from '@/helpers/auth';
-import {
+import messages from '@/helpers/messages.json';
+
+const {
   ERROR_INVALID_CREDENTIALS,
   ERROR_INVALID_ENCRYPTION_KEY,
   TOOLTIP_LOGIN_ENCRYPTION_KEY,
-} from '@/helpers/messages.json';
+} = messages;
 
 export default {
   data() {

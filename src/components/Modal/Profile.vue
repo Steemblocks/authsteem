@@ -5,9 +5,9 @@
       <template v-else>
         <div class="mb-4 text-center" v-if="!failed">
           <div class="mb-4">
-            <Avatar :username="username" :size="80" class="mb-2" />
+            <Avatar :username="username" :size="80" :iconUrl="profile.icon" class="mb-2" />
             <h4 v-if="profile.name" class="m-0">{{ profile.name }}</h4>
-            <div v-if="profile.website">{{ profile.website | parseUrl }}</div>
+            <div v-if="profile.website">{{ $filters.parseUrl(profile.website) }}</div>
           </div>
           <a
             v-if="profile.website"
@@ -66,11 +66,15 @@ export default {
     },
     loadProfile() {
       this.isLoading = true;
+      // Fetch from blockchain
       client.database.getAccounts([this.username]).then(accounts => {
         if (accounts[0]) {
           try {
-            this.profile = JSON.parse(accounts[0].json_metadata).profile;
-            if (!isValidUrl(this.profile.website)) delete this.profile.website;
+            const metadata = JSON.parse(accounts[0].json_metadata);
+            if (metadata && metadata.profile) {
+              this.profile = metadata.profile;
+              if (!isValidUrl(this.profile.website)) delete this.profile.website;
+            }
           } catch (e) {
             console.log('Failed to parse app account', e);
           }

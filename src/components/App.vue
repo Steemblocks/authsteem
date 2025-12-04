@@ -2,7 +2,7 @@
   <div class="text-center">
     <a @click="$emit('select')">
       <span class="mb-2 d-block">
-        <Avatar :username="username" :size="60" />
+        <Avatar :username="username" :size="60" :iconUrl="iconUrl" />
       </span>
       {{ username }}
     </a>
@@ -11,6 +11,6 @@
 
 <script>
 export default {
-  props: ['username'],
+  props: ['username', 'iconUrl'],
 };
 </script>

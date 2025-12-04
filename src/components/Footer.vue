@@ -24,7 +24,7 @@
   ul {
     list-style: none;
     a {
-      color: @input-border-color;
+      color: @text-color;
     }
   }
 }

@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router';
 import store from '@/store';
 import { isWeb } from '@/helpers/utils';
 import { hasAccounts } from '@/helpers/keychain';
@@ -20,10 +19,8 @@ const Accounts = () => import(/* webpackChunkName: "accounts" */ '@/views/Accoun
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
 const Apps = () => import(/* webpackChunkName: "apps" */ '@/views/Apps.vue');
 const Developers = () => import(/* webpackChunkName: "developers" */ '@/views/Developers.vue');
-const Error404 = () => import(/* webpachChunkName: "error-404" */ '@/views/404.vue');
-const BroadcastOp = () => import(/* webpachChunkName: "dev-tools" */ '@/views/DevTools/BroadcastOp.vue');
-
-Vue.use(Router);
+const Error404 = () => import(/* webpackChunkName: "error-404" */ '@/views/404.vue');
+const BroadcastOp = () => import(/* webpackChunkName: "dev-tools" */ '@/views/DevTools/BroadcastOp.vue');
 
 const requireAuth = (to, from, next, params) => {
   if (!store.state.auth.account.name) {
@@ -60,8 +57,8 @@ const redirectToLoginRequest = (to, from, next) => {
   next({ name: 'login-request-app', params: { clientId }, query });
 };
 
-export default new Router({
-  mode: isWeb() ? 'history' : 'hash',
+export default createRouter({
+  history: isWeb() ? createWebHistory() : createWebHashHistory(),
   scrollBehavior() {
     return { x: 0, y: 0 };
   },
@@ -104,7 +101,7 @@ export default new Router({
       component: LoginRequest,
     },
     {
-      path: '/sign/*',
+      path: '/sign/:pathMatch(.*)*',
       name: 'sign',
       component: Sign,
     },
@@ -173,7 +170,7 @@ export default new Router({
       component: BroadcastOp,
     },
     {
-      path: '*',
+      path: '/:pathMatch(.*)*',
       component: Error404,
       name: 'error-404',
     },

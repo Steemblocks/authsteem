@@ -2,7 +2,7 @@
   <span
     class="avatar"
     :style="{
-      'background-image': `url(https://steemitimages.com/u/${username}/avatar/small`,
+      'background-image': iconUrl ? `url(${iconUrl})` : `url(https://steemitimages.com/u/${username}/avatar/small`,
       width: `${this.size}px`,
       height: `${this.size}px`,
     }"
@@ -19,6 +19,10 @@ export default {
     size: {
       type: Number,
       default: 32,
+    },
+    iconUrl: {
+      type: String,
+      default: null,
     },
   },
 };

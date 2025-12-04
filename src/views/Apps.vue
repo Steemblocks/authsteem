@@ -23,9 +23,10 @@
         </div>
         <div class="columns" v-if="filteredApps.length > 0">
           <App
-            :username="app"
-            :key="app"
             v-for="app in filteredApps.slice(0, 12)"
+            :key="app"
+            :username="app"
+            :iconUrl="getAppIcon(app)"
             class="column col-sm-3 col-6 mb-4"
             @select="openModal(app)"
           />
@@ -34,23 +35,25 @@
       </template>
       <template v-else>
         <p class="mb-4"><b>Top apps</b></p>
-        <VueLoadingIndicator v-if="isLoading && topApps.length === 0" class="big mb-4" />
+        <VueLoadingIndicator v-if="isLoading && allTopApps.length === 0" class="big mb-4" />
         <div class="columns mb-4" v-else>
           <App
-            :username="app"
+            v-for="app in allTopApps.slice(0, 12)"
             :key="app"
-            v-for="app in topApps.slice(0, 12)"
+            :username="app"
+            :iconUrl="getAppIcon(app)"
             class="column col-sm-3 col-6 mb-4"
             @select="openModal(app)"
           />
         </div>
         <p class="mb-4"><b>Recently created</b></p>
-        <VueLoadingIndicator v-if="isLoading && apps.length === 0" class="big mb-4" />
+        <VueLoadingIndicator v-if="isLoading && allApps.length === 0" class="big mb-4" />
         <div class="columns mb-4" v-else>
           <App
-            :username="app"
+            v-for="app in allApps.slice(0, 4)"
             :key="app"
-            v-for="app in apps.slice(0, 4)"
+            :username="app"
+            :iconUrl="getAppIcon(app)"
             class="column col-sm-3 col-6 mb-4"
             @select="openModal(app)"
           />
@@ -81,14 +84,33 @@ export default {
     };
   },
   computed: {
+    allTopApps() {
+      const removedApps = [
+        'nextcolony', 'partiko', 'partiko.app', 'busy.app', 'share2steem', 'share2steem.app', 
+        'esteem-app', 'steempeak.app', 'test-sdfgh', 'peakd.app', 'unknownonline', 
+        'buildteam.app', 'smartsteem.app', 'drugwars.app', 'actifit.app', 'steemhunt.app'
+      ];
+      return this.topApps.filter(app => !removedApps.includes(app));
+    },
+    allApps() {
+      const removedApps = [
+        'nextcolony', 'partiko', 'partiko.app', 'busy.app', 'share2steem', 'share2steem.app', 
+        'esteem-app', 'steempeak.app', 'test-sdfgh', 'peakd.app', 'unknownonline', 
+        'buildteam.app', 'smartsteem.app', 'drugwars.app', 'actifit.app', 'steemhunt.app'
+      ];
+      return this.apps.filter(app => !removedApps.includes(app));
+    },
     filteredApps() {
-      const apps = JSON.parse(JSON.stringify(this.apps));
+      const apps = JSON.parse(JSON.stringify(this.allApps));
       return apps
         .sort((a, b) => a.length - b.length)
         .filter(app => app.toLowerCase().includes(this.search.toLowerCase()));
     },
   },
   methods: {
+    getAppIcon() {
+      return null;
+    },
     async loadApps() {
       const username = ORACLE_USERNAME;
       const step = 100;

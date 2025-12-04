@@ -78,11 +78,13 @@ function processValue(schema, key, value, { vestsToSP }) {
   const realValue = !value && typeof defaultValue !== 'undefined' ? defaultValue : value;
   switch (type) {
     case 'amount':
-      if (realValue.indexOf('VESTS') !== -1) return `${parseFloat(realValue).toFixed(6)} VESTS`;
-      if (realValue.indexOf('SP') !== -1)
-        return `${(parseFloat(realValue) / vestsToSP).toFixed(6)} VESTS`;
-      if (realValue.indexOf('STEEM') !== -1) return `${parseFloat(realValue).toFixed(3)} STEEM`;
-      if (realValue.indexOf('SBD') !== -1) return `${parseFloat(realValue).toFixed(3)} SBD`;
+      if (typeof realValue === 'string') {
+        if (realValue.indexOf('VESTS') !== -1) return `${parseFloat(realValue).toFixed(6)} VESTS`;
+        if (realValue.indexOf('SP') !== -1)
+          return `${(parseFloat(realValue) / vestsToSP).toFixed(6)} VESTS`;
+        if (realValue.indexOf('STEEM') !== -1) return `${parseFloat(realValue).toFixed(3)} STEEM`;
+        if (realValue.indexOf('SBD') !== -1) return `${parseFloat(realValue).toFixed(3)} SBD`;
+      }
       return realValue;
     case 'int':
       return parseInt(realValue, 10);
@@ -95,6 +97,9 @@ function processValue(schema, key, value, { vestsToSP }) {
 }
 
 export function processTransaction(transaction, config) {
+  if (!transaction || !transaction.tx) {
+    return transaction;
+  }
   const processed = { ...transaction };
   processed.tx.operations = transaction.tx.operations.map(([name, payload]) => {
     const processedPayload = Object.keys(operations[name].schema).reduce(

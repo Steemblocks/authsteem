@@ -57,14 +57,14 @@
           </p>
           <template v-if="callback">
             <router-link
-              v-if="callback[0] === '/'"
+              v-if="callback && callback.length > 0 && callback[0] === '/'"
               :to="callback"
               class="btn btn-large btn-blue mb-2 mt-2"
             >
               Continue
             </router-link>
             <a v-else :href="callback" class="btn btn-large btn-blue mb-2 mt-2">
-              Continue to {{ callback | parseUrl }}
+              Continue to {{ $filters.parseUrl(callback) }}
             </a>
           </template>
         </div>
@@ -99,7 +99,7 @@ export default {
       return this.$store.state.auth.account;
     },
     hasAuthority() {
-      if (this.account.name) {
+      if (this.account.name && this.account[this.authority] && this.account[this.authority].account_auths) {
         const auths = this.account[this.authority].account_auths.map(auth => auth[0]);
         return auths.indexOf(this.username) !== -1;
       }
@@ -120,15 +120,15 @@ export default {
         json_metadata: account.json_metadata,
       };
       data[authority] = JSON.parse(JSON.stringify(account[authority]));
-      data[authority].account_auths.forEach((accountAuth, i) => {
-        if (accountAuth[0] === username) data[authority].account_auths.splice(i, 1);
-      });
+      data[authority].account_auths = data[authority].account_auths.filter(
+        accountAuth => accountAuth[0] !== username
+      );
 
       this.updateAccount(data)
         .then(confirmation => {
           this.loadAccount().then(() => {
             if (isWeb && callback) {
-              if (callback[0] === '/') {
+              if (callback.length > 0 && callback[0] === '/') {
                 this.$router.push(callback);
               } else {
                 window.location = callback;
